@@ -19,8 +19,18 @@ def completeList():
     return list
 
 
-def accesionCalculator():
-    
+def accesionCalculator(list):
+    #print(list)
+    with open('sequences.csv','r') as seq_file:
+        csv_reader = csv.DictReader(seq_file)
+
+        accesAc = []
+        for seq in csv_reader:
+            for i in range (len(list)):
+                if list[i][0] == seq['Geo_Location'] and list[i][1] == int(seq['Length']):
+                    accesAc.append(seq['Accession'])
+            
+        return accesAc
 
 
 def modify(list):
@@ -28,6 +38,7 @@ def modify(list):
         list[i][1].sort()
     
     return list
+
 
 def calculMediana(arr):
     list = []
@@ -39,12 +50,14 @@ def calculMediana(arr):
             num = arr[i][1][int((long/2)+1)-1]
         total = 0
         list.append([arr[i][0],num])
-    #print(list)
-    accesionCalculator(list)
+    
+    accesList = accesionCalculator(list)
+    return accesList
     
 
 if __name__=="__main__":
     list = completeList()
     arr = modify(list)
-    calculMediana(arr)
+    accesList = calculMediana(arr)
+    print(accesList)
 
