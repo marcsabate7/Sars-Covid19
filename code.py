@@ -24,13 +24,13 @@ def accesionCalculator(list):
     with open('sequences.csv','r') as seq_file:
         csv_reader = csv.DictReader(seq_file)
 
-        accesAc = []
         for seq in csv_reader:
-            for i in range (len(list)):
-                if list[i][0] == seq['Geo_Location'] and list[i][1] == int(seq['Length']):
-                    accesAc.append(seq['Accession'])
-            
-        return accesAc
+            for i in range(len(list)):
+                if seq['Geo_Location']==list[i][0] and int(seq['Length'])==list[i][1]:
+                    list[i].append(seq['Accession'])   
+                while len(list[i]) >=4:
+                    list[i].pop()
+    return list
 
 
 def modify(list):
@@ -60,4 +60,3 @@ if __name__=="__main__":
     arr = modify(list)
     accesList = calculMediana(arr)
     print(accesList)
-
