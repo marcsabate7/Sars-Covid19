@@ -18,6 +18,11 @@ def completeList():
             trobat = False
     return list
 
+
+def accesionCalculator():
+    
+
+
 def modify(list):
     for i in range(len(list)):
         list[i][1].sort()
@@ -26,21 +31,18 @@ def modify(list):
 
 def calculMediana(arr):
     list = []
-    for i in range(len(arr)-1):
+    for i in range(len(arr)):
         long = len(arr[i][1])
         if long % 2 != 0:
-            total = int(round((long/2)))
-            num = arr[i][1]
-            numbo = num[total-1]
+            num = arr[i][1][int(round(long/2))-1]
         else:
-            total = int((long/2)+1)
-            num = arr[i][1]
-            numbo = num[total-1]
+            num = arr[i][1][int((long/2)+1)-1]
         total = 0
-        list.append([arr[i][0],numbo])
-    print(list)
+        list.append([arr[i][0],num])
+    #print(list)
+    accesionCalculator(list)
     
-    
+
 if __name__=="__main__":
     list = completeList()
     arr = modify(list)
