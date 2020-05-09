@@ -1,5 +1,6 @@
 import csv
-'''
+
+
 with open('sequences_table.csv','r') as seq_file:
     csv_reader = csv.DictReader(seq_file)
 
@@ -10,54 +11,58 @@ with open('sequences_table.csv','r') as seq_file:
         for j in range(len(list)):
             if seq['Geo_Location'] == list[j][0]:
                 trobat = True
-                list[j].append(seq['Length'])
+                list[j][1].append(int(seq['Length']))
                 j = len(list)-1
         if trobat == False:
-            list.append([seq['Geo_Location'],seq['Length']])
+            list.append([seq['Geo_Location'],[int(seq['Length'])]])
         trobat = False
-    #print(list)
 
-def partition(array, start, end):
-    pivot = array[start]
-    low = start + 1
-    high = end
+## ORDENEM LIST I PRINTEM ##
 
-    while True:
-        # If the current value we're looking at is larger than the pivot
-        # it's in the right place (right side of pivot) and we can move left,
-        # to the next element.
-        # We also need to make sure we haven't surpassed the low pointer, since that
-        # indicates we have already moved all the elements to their correct side of the pivot
-        while low <= high and array[high] >= pivot:
-            high = high - 1
+for i in range(len(list)):
+    list[i][1].sort()
+#  print(list[i])
+#   print('\n')
+#print('\n')
 
-        # Opposite process of the one above
-        while low <= high and array[low] <= pivot:
-            low = low + 1
 
-        # We either found a value for both high and low that is out of order
-        # or low is higher than high, in which case we exit the loop
-        if low <= high:
-            array[low], array[high] = array[high], array[low]
-            # The loop continues
-        else:
-            # We exit out of the loop
-            break
+## TAULA DE MEDIANES I PAISOS ##
 
-    array[start], array[high] = array[high], array[start]
+medianes=[]
+for i in range(len(list)):
+    val_mediana_temp = list[i][1][len(list[i][1])//2]
+    medianes.append([list[i][0],val_mediana_temp])
+#print(medianes)
 
-    return high
-#And finally, let's implement the quick_sort() function:
 
-def quick_sort(array, start, end):
-    if start >= end:
-        return
+## AFEGIM ACCESSION A TAULA MEDIANES I PAISOS ##
 
-    p = partition(array, start, end)
-    quick_sort(array, start, p-1)
-    quick_sort(array, p+1, end)
+with open('sequences_table.csv','r') as seq_file:
+    csv_reader = csv.DictReader(seq_file)
 
-for i in range(len(list)-1):
-    quick_sort(list[i],1,len(list[i])-1)
+    for seq in csv_reader:
+        for i in range(len(medianes)):
+            if seq['Geo_Location']==medianes[i][0] and int(seq['Length'])==medianes[i][1]:
+                medianes[i].append(seq['Accession'])   
+            while len(medianes[i]) >=4 :
+                medianes[i].pop()
+                
+print('\n')
+#print(medianes)
 
-print(list)
+
+## IMPRIMIR SEQUENCIES DE ACCESSIONS SELECCIONATS ##
+
+from Bio import SeqIO
+
+for seq_record in SeqIO.parse("sequences.fasta", "fasta"):
+    for i in range(len(medianes)):
+        if medianes[i][2]==seq_record.id:
+            temp= str(seq_record.seq)
+            if len(temp)>1000:
+                temp = temp[:1001]
+            medianes[i].append(temp)
+            
+            
+print(medianes)
+
