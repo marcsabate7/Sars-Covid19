@@ -20,6 +20,72 @@ def completeList():
             trobat = False
     return list
 
+gap_penalty = -1
+match_award = 1
+mismatch_penalty = -1
+
+def zeros(rows, cols):
+    # Define an empty list
+    retval = []
+    # Set up the rows of the matrix
+    for x in range(rows):
+        # For each row, add an empty list
+        retval.append([])
+        # Set up the columns in each row
+        for y in range(cols):
+            # Add a zero to each column in each row
+            retval[-1].append(0)
+    # Return the matrix of zeros
+    return retval
+
+def match_score(alpha, beta):
+    if alpha == beta:
+        return match_award
+    elif alpha == '-' or beta == '-':
+        return gap_penalty
+    else:
+        return mismatch_penalty
+
+def needleman_wunsch(seq1,seq2):
+    # Store length of two sequences
+    n = len(seq1)  
+    m = len(seq2)
+    
+    # Generate matrix of zeros to store scores
+    score = zeros(m+1, n+1)
+   
+    # Calculate score table
+    
+    # Fill out first column
+    for i in range(0, m + 1):
+        score[i][0] = gap_penalty * i
+    
+    # Fill out first row
+    for j in range(0, n + 1):
+        score[0][j] = gap_penalty * j
+    
+    # Fill out all other values in the score matrix
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            # Calculate the score by checking the top, left, and diagonal cells
+            match = score[i - 1][j - 1] + match_score(seq1[j-1], seq2[i-1])
+            delete = score[i - 1][j] + gap_penalty
+            insert = score[i][j - 1] + gap_penalty
+            # Record the maximum score from the three possible scores calculated above
+            score[i][j] = max(match, delete, insert)
+    return score[m][n]
+
+
+
+def passer(list):
+    array = []
+    for i in range(len(list)):
+        for j in range(i+1,len(list)):
+            numSimil = needleman_wunsch(list[i][3],list[j][3])
+            array[i].append(numSimil)
+    print(array)
+    
+        
 
 
 def arnGen(arr):
@@ -30,11 +96,8 @@ def arnGen(arr):
                 if len(temp)>1000:
                     temp = temp[:1001]
                 arr[i].append(temp)
-    print(arr)
+    return arr
 
-
-
-    
 
 def accesionCalculator(list):
     #print(list)
@@ -76,4 +139,5 @@ if __name__=="__main__":
     list = completeList()
     arr = modify(list)
     accesList = calculMediana(arr)
-    arnGen(accesList)
+    completeList = arnGen(accesList)
+    passer(completeList)
