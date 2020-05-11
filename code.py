@@ -1,4 +1,6 @@
 import csv
+from Bio import SeqIO
+
 
 def completeList():
     with open('sequences.csv','r') as seq_file:
@@ -18,6 +20,21 @@ def completeList():
             trobat = False
     return list
 
+
+
+def arnGen(arr):
+    for seq_record in SeqIO.parse("sequences2.fasta", "fasta"):
+        for i in range(len(arr)):
+            if arr[i][2]==seq_record.id:
+                temp= str(seq_record.seq)
+                if len(temp)>1000:
+                    temp = temp[:1001]
+                arr[i].append(temp)
+    print(arr)
+
+
+
+    
 
 def accesionCalculator(list):
     #print(list)
@@ -59,4 +76,4 @@ if __name__=="__main__":
     list = completeList()
     arr = modify(list)
     accesList = calculMediana(arr)
-    print(accesList)
+    arnGen(accesList)
