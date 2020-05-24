@@ -150,8 +150,8 @@ def nou_centre():
                 control.append(result)
             index = control.index(min(control))
             list_randoms[i] = aux_random[i][index]
-            print("S'han modificat els centres, ara son: \n") 
-            print(list_randoms)
+            #print("S'han modificat els centres, ara son: \n") 
+            #print(list_randoms)
             control = []
         else: 
             list_randoms[i] = aux_random[i][0]
@@ -172,9 +172,8 @@ if __name__=="__main__":
     elimina_centres_de_aux()
     crear_grups()
     classifica_per_grups()
-    #print(aux_random)
     anterior = list_randoms.copy()                                                  # es crea "anterior" amb els centres actuals
-
+    cont_modificacions = 0
     trobat = True
     while trobat:
         nou_centre()                                                                # Busca nous millors centres de grup i repeteix el proces que en la inicialitzacio 
@@ -184,10 +183,19 @@ if __name__=="__main__":
         crear_grups()
         classifica_per_grups()
         #print(aux_random)
+        cont_modificacions +=1
         if anterior == list_randoms:
             trobat = False
-            print("Els centres han coincidit amb la volta anterior pertant s'ha acabat la classificació")
+            print('\n')
+            print("Els centres han coincidit amb la volta anterior pertant s'ha acabat la classificació\n")
+            print("En el programa hi ha hagut un total de {} centres diferents\n".format(cont_modificacions))
+            print("Els centres finals són:\n")
+            for i in range(len(list_randoms)):
+                print(list_randoms[i])
+                print('\n')
+            print("I els tres grups:")
+            print('\n')
+            for j in range(len(aux_random)):
+                print(aux_random[j])
+                print('\n')
         anterior = list_randoms.copy()
-
-   
- 
