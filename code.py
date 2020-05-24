@@ -112,12 +112,6 @@ def num_entrePaisos(medianes):                                                  
             array.append([output,medianes[x][0],list[y][0]])
     return array
 
-
-def troba_a_larray_i_retorna_numero(pais1,pais2):                                   # busca en la taula array la distancia entre dos paisos concrets
-    for i in array:
-        if i[1]==pais1 and i[2]==pais2:
-            return i[0]
-
 def elimina_centres_de_aux():                                                       # auxiliar seran totes les mostres a classificar segons el centre que tinguin mes aprop
     for i in range(len(list_randoms)):                                              # per tant, eliminem de les mostres els tres centres
         aux.remove(list_randoms[i])
@@ -195,6 +189,5 @@ if __name__=="__main__":
             print("Els centres han coincidit amb la volta anterior pertant s'ha acabat la classificació")
         anterior = list_randoms.copy()
 
-    
    
  
